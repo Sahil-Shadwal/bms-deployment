@@ -1,0 +1,27 @@
+name: Deploy to staging
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    redeploy_everything:
+        name: Deploying everything to the staging cluster
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: SSH into server and deploy
+              run: |
+                  echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key
+                  chmod 600 ~/ssh_key
+
+                  ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.7.46.0 << 'EOF'
+                    cd bms-deployment
+                    git pull
+                    pnpm install
+                    pnpm run build
+                    pm2 restart fe-server
+                    pm2 restart http-server
+                    pm2 restart ws-server
+                  EOF
