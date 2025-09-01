@@ -17,7 +17,7 @@ jobs:
                   chmod 600 ~/ssh_key
 
                   ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.7.46.0 << 'EOF'
-                    cd bms-development
+                    cd bms-deployment
                     git pull
                     pnpm install
                     pnpm run build
