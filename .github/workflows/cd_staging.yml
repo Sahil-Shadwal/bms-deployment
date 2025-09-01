@@ -13,7 +13,7 @@ jobs:
         steps:
             - name: SSH into server and deploy
               run: |
-                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
+                  echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key
                   chmod 600 ~/ssh_key
 
                   ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@3.7.46.0 << 'EOF'
